@@ -1,36 +1,33 @@
-const CACHE_NAME = 'recomp-v1.2';
+const CACHE_NAME = 'recomposition-v2';
 const ASSETS = [
+  './',
   './index.html',
   './manifest.json',
-  './sw.js'
+  './icon.png'
 ];
 
-self.addEventListener('install', event => {
-  self.skipWaiting(); // Форсируем активацию новой версии SW сразу
+self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
+    caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(ASSETS);
+    })
+  );
+  self.skipWaiting(); // Принудительно активируем новый SW
+});
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((keys) => {
+      return Promise.all(
+        keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))
+      );
     })
   );
 });
 
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(keys => {
-      return Promise.all(
-        keys.map(key => {
-          if (key !== CACHE_NAME) {
-            return caches.delete(key); // Удаляем старый кэш предыдущих версий
-          }
-        })
-      );
-    }).then(() => self.clients.claim()) // Немедленно берем под контроль все вкладки
-  );
-});
-
-self.addEventListener('fetch', event => {
+self.addEventListener('fetch', (event) => {
   event.respondWith(
-    caches.match(event.request).then(response => {
+    caches.match(event.request).then((response) => {
       return response || fetch(event.request);
     })
   );
