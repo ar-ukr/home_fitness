@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Рекомпозиция 1.0 — Тренировка дома</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+        }
+    </style>
+</head>
+<body class="text-slate-200 min-h-screen pb-12">
+
+    <header class="bg-slate-800 border-b border-slate-700 py-6 px-4 text-center sticky top-0 z-50 shadow-md">
+        <h1 class="text-xl font-bold text-emerald-400">РЕКОМПОЗИЦИЯ 1.0</h1>
+        <p class="text-xs text-slate-400 mt-1">Домашний комплекс • 3 раза в неделю</p>
+    </header>
+
+    <main class="max-w-md mx-auto px-4 mt-6">
+
+        <section class="bg-slate-800 border border-slate-700 rounded-2xl p-6 mb-8 text-center shadow-lg">
+            <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400 mb-2">Таймер отдыха</h2>
+            <div id="timer-display" class="text-5xl font-bold text-emerald-400 my-4">30<span class="text-lg text-slate-500">сек</span></div>
+            
+            <div class="flex justify-center gap-3">
+                <button id="btn-start" onclick="toggleTimer()" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-6 py-2.5 rounded-xl transition shadow-md">
+                    Старт
+                </button>
+                <button onclick="addTime()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 font-semibold px-4 py-2.5 rounded-xl transition">
+                    +15 сек
+                </button>
+                <button onclick="resetTimer()" class="bg-slate-900 hover:bg-slate-800 text-slate-400 px-4 py-2.5 rounded-xl transition border border-slate-700">
+                    Сброс
+                </button>
+            </div>
+        </section>
+
+        <h2 class="text-lg font-bold text-slate-300 mb-4 px-1">Упражнения (3 круга)</h2>
+        <div class="space-y-4">
+
+            <div class="bg-slate-800 border border-slate-700 rounded-xl p-4 flex items-start gap-4">
+                <div class="bg-emerald-500/10 text-emerald-400 p-3 rounded-lg text-2xl">🏋️‍♂️</div>
+                <div>
+                    <h3 class="font-bold text-slate-100">1. Приседания</h3>
+                    <p class="text-xs text-emerald-400 font-semibold mt-0.5">3 подхода × 15–20 раз</p>
+                    <p class="text-xs text-slate-400 mt-1.5">Рюкзак держи на груди. Спина ровная, пятки от пола не отрывай.</p>
+                </div>
+            </div>
+
+            <div class="bg-slate-800 border border-slate-700 rounded-xl p-4 flex items-start gap-4">
+                <div class="bg-emerald-500/10 text-emerald-400 p-3 rounded-lg text-2xl">🤸‍♂️</div>
+                <div>
+                    <h3 class="font-bold text-slate-100">2. Отжимания</h3>
+                    <p class="text-xs text-emerald-400 font-semibold mt-0.5">3 подхода × максимум</p>
+                    <p class="text-xs text-slate-400 mt-1.5">Тело в одну линию. Если тяжело — делай с колен. Локти назад, не в стороны.</p>
+                </div>
+            </div>
+
+            <div class="bg-slate-800 border border-slate-700 rounded-xl p-4 flex items-start gap-4">
+                <div class="bg-emerald-500/10 text-emerald-400 p-3 rounded-lg text-2xl">🪑</div>
+                <div>
+                    <h3 class="font-bold text-slate-100">3. Обратные отжимания</h3>
+                    <p class="text-xs text-emerald-400 font-semibold mt-0.5">3 подхода × 10–12 раз</p>
+                    <p class="text-xs text-slate-400 mt-1.5">Опирайся руками о диван или стул. Опускайся вертикально вниз, грудь вперед.</p>
+                </div>
+            </div>
+
+            <div class="bg-slate-800 border border-slate-700 rounded-xl p-4 flex items-start gap-4">
+                <div class="bg-emerald-500/10 text-emerald-400 p-3 rounded-lg text-2xl">🎒</div>
+                <div>
+                    <h3 class="font-bold text-slate-100">4. Тяга рюкзака одной рукой</h3>
+                    <p class="text-xs text-emerald-400 font-semibold mt-0.5">3 подхода × 12–15 раз (на руку)</p>
+                    <p class="text-xs text-slate-400 mt-1.5">Спина параллельно полу. Тяни рюкзак к бедру, максимально прожимая лопатку.</p>
+                </div>
+            </div>
+
+            <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-4 flex items-start gap-4">
+                <div class="bg-emerald-500/20 text-emerald-400 p-3 rounded-lg text-2xl">🧘‍♂️</div>
+                <div>
+                    <h3 class="font-bold text-slate-100">5. Ягодичный мостик <span class="text-[10px] bg-emerald-500 text-slate-950 px-1.5 py-0.5 rounded ml-1 font-bold">ОСАНКА</span></h3>
+                    <p class="text-xs text-emerald-400 font-semibold mt-0.5">3 подхода × 20 раз</p>
+                    <p class="text-xs text-slate-300 mt-1.5">В верхней точке сжимай ягодицы. Помогает убрать «вываливающийся» живот.</p>
+                </div>
+            </div>
+
+            <div class="bg-slate-800 border border-slate-700 rounded-xl p-4 flex items-start gap-4">
+                <div class="bg-emerald-500/10 text-emerald-400 p-3 rounded-lg text-2xl">⏱️</div>
+                <div>
+                    <h3 class="font-bold text-slate-100">6. Планка</h3>
+                    <p class="text-xs text-emerald-400 font-semibold mt-0.5">3 подхода × 45–60 секунд</p>
+                    <p class="text-xs text-slate-400 mt-1.5">Не прогибай поясницу. Напряги пресс и ягодицы, дыши ровно.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="mt-8 bg-slate-800/50 border border-slate-700/50 rounded-xl p-4">
+            <h4 class="font-bold text-sm text-slate-300 mb-2">💡 Совет тренера:</h4>
+            <p class="text-xs text-slate-400 leading-relaxed">
+                Отдых между упражнениями внутри круга — 30 секунд (засекай на таймере выше). Между полными кругами отдыхай 2 минуты.
+            </p>
+        </div>
+    </main>
+
+    <script>
+        let timer;
+        let timeLeft = 30;
+        let isRunning = false;
+
+        const display = document.getElementById('timer-display');
+        const startBtn = document.getElementById('btn-start');
+
+        function updateDisplay() {
+            display.innerHTML = `${timeLeft}<span class="text-lg text-slate-500">сек</span>`;
+        }
+
+        function toggleTimer() {
+            if (isRunning) {
+                clearInterval(timer);
+                startBtn.innerText = 'Старт';
+                startBtn.className = "bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-6 py-2.5 rounded-xl transition shadow-md";
+            } else {
+                startBtn.innerText = 'Пауза';
+                startBtn.className = "bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-6 py-2.5 rounded-xl transition shadow-md";
+                timer = setInterval(() => {
+                    if (timeLeft > 0) {
+                        timeLeft--;
+                        updateDisplay();
+                    } else {
+                        clearInterval(timer);
+                        isRunning = false;
+                        startBtn.innerText = 'Старт';
+                        startBtn.className = "bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-6 py-2.5 rounded-xl transition shadow-md";
+                        alert("Время отдыха вышло! Пора за работу.");
+                    }
+                }, 1000);
+            }
+            isRunning = !isRunning;
+        }
+
+        function addTime() {
+            timeLeft += 15;
+            updateDisplay();
+        }
+
+        function resetTimer() {
+            clearInterval(timer);
+            isRunning = false;
+            timeLeft = 30;
+            updateDisplay();
+            startBtn.innerText = 'Старт';
+            startBtn.className = "bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-6 py-2.5 rounded-xl transition shadow-md";
+        }
+    </script>
+</body>
+</html>
