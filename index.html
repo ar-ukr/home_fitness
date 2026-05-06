@@ -18,7 +18,6 @@
             font-family: 'Inter', sans-serif;
             background-color: #0f172a;
         }
-        /* Скрытие скроллбара для чистоты интерфейса */
         ::-webkit-scrollbar { display: none; }
     </style>
 </head>
@@ -54,7 +53,13 @@
     </header>
 
     <main class="max-w-md mx-auto w-full px-4 mt-6 flex-1">
-        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 px-1">Упражнения (клик для фокуса)</h2>
+        <div class="flex justify-between items-center mb-4 px-1">
+            <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Упражнения</h2>
+            <button onclick="resetAllSets()" class="text-xs text-rose-400 hover:text-rose-300 font-bold uppercase tracking-wider transition active:scale-95">
+                Сбросить подходы ×
+            </button>
+        </div>
+        
         <div id="exercises-list" class="space-y-4">
             </div>
     </main>
@@ -93,17 +98,18 @@
     </div>
 
     <script>
-        // Данные упражнений
+        // Обновленный массив упражнений с добавленным Бицепсом
         const exercises = [
-            { id: 1, title: "Приседания с рюкзаком", sets: 3, reps: "15–20 раз", desc: "Держи рюкзак на груди перед собой. Спина ровная, лопатки собраны. Опускайся до параллели с полом, не отрывая пятки.", emoji: "🏋️‍♂️", gif: "gifs/squats.gif" },
-            { id: 2, title: "Отжимания от пола", sets: 3, reps: "на максимум", desc: "Тело ровное, как доска. Напряги пресс и ягодицы. Локти идут назад под углом 45 градусов. Тяжело? Делай с колен.", emoji: "🤸‍♂️", gif: "gifs/pushups.gif" },
-            { id: 3, title: "Обратные отжимания", sets: 3, reps: "10–12 раз", desc: "Руками опирайся о край дивана или стула. Спину держи ближе к опоре. Медленно опускайся вниз до угла 90° в локтях.", emoji: "🪑", gif: "gifs/dips.gif" },
-            { id: 4, title: "Тяга рюкзака к поясу", sets: 3, reps: "12–15 раз (на руку)", desc: "Опорой выступает диван. Спина абсолютно ровная. Тяни рюкзак к карману брюк по дуге, работая лопаткой, а не силой руки.", emoji: "🎒", gif: "gifs/rows.gif" },
-            { id: 5, title: "Ягодичный мостик", sets: 3, reps: "20 раз", desc: "Лежа на спине, согни колени. Силой ягодиц выталкивай таз вверх, задерживаясь на секунду. Поясницу вверху не прогибай.", emoji: "🧘‍♂️", gif: "gifs/bridge.gif" },
-            { id: 6, title: "Планка на локтях", sets: 3, reps: "45–60 секунд", desc: "Локти строго под плечами. Пресс зажат до предела, таз подкручен вперед (не давай пояснице провисать вниз).", emoji: "⏱️", gif: "gifs/plank.gif" }
+            { id: 1, title: "Приседания с рюкзаком", sets: 3, reps: "15–20 раз", desc: "Держи рюкзак на груди перед собой. Спина ровная, лопатки собраны. Опускайся до параллели с полом, не отрывая пятки от пола.", emoji: "🏋️‍♂️", gif: "gifs/squats.gif" },
+            { id: 2, title: "Отжимания от пола", sets: 3, reps: "на максимум", desc: "Тело ровное, как доска. Напряги пресс и ягодицы. Локти уходят назад под углом 45 градусов. Не прогибай поясницу вниз.", emoji: "🤸‍♂️", gif: "gifs/pushups.gif" },
+            { id: 3, title: "Обратные отжимания", sets: 3, reps: "10–12 раз", desc: "Руками опирайся о край дивана или стула. Спину держи ближе к опоре. Медленно опускайся вниз до угла 90° в локтевых суставах.", emoji: "🪑", gif: "gifs/dips.gif" },
+            { id: 4, title: "Тяга рюкзака к поясу (в наклоне)", sets: 3, reps: "12–15 раз (на руку)", desc: "Опора на диван рукой и коленом. Спина идеально ровная, параллельно полу. Тяни рюкзак к бедру за счет мышц спины, сводя лопатку.", emoji: "🎒", gif: "gifs/rows.gif" },
+            { id: 5, title: "Сгибания на бицепс с рюкзаком", sets: 3, reps: "12–15 раз", desc: "Возьми рюкзак за верхнюю ручку или лямки. Прижми локти к бокам. Сгибай руки в локтях, поднимая рюкзак к груди. Корпусом не раскачивай.", emoji: "💪", gif: "gifs/curls.gif" },
+            { id: 6, title: "Ягодичный мостик", sets: 3, reps: "20 раз", desc: "Лежа на спине, согни колени. Силой ягодиц выталкивай таз вверх, задерживаясь на секунду. Не прогибайся избыточно в пояснице.", emoji: "🧘‍♂️", gif: "gifs/bridge.gif" },
+            { id: 7, title: "Планка на локтях", sets: 3, reps: "45–60 секунд", desc: "Локти строго под плечами. Пресс зажат до предела, таз слегка подкручен вперед (не давай пояснице провисать вниз).", emoji: "⏱️", gif: "gifs/plank.gif" }
         ];
 
-        // Инициализация подходов в localStorage, если их нет
+        // Инициализация подходов
         if(!localStorage.getItem('sets_state')) {
             localStorage.setItem('sets_state', JSON.stringify({}));
         }
@@ -114,7 +120,7 @@
         let isRunning = false;
         let wakeLock = null;
 
-        // Генерация карточек упражнений (увеличенные размеры и шрифты)
+        // Генерация карточек упражнений
         const listContainer = document.getElementById('exercises-list');
         exercises.forEach(ex => {
             const card = document.createElement('div');
@@ -136,7 +142,15 @@
             listContainer.appendChild(card);
         });
 
-        // Работа с Wake Lock (Блокировка сна)
+        // Функция принудительного сброса всех подходов
+        function resetAllSets() {
+            if (confirm("Сбросить весь прогресс по подходам для начала новой тренировки?")) {
+                localStorage.setItem('sets_state', JSON.stringify({}));
+                alert("Прогресс сброшен! Отличной новой тренировки 💪");
+            }
+        }
+
+        // Блокировка сна экрана
         async function requestWakeLock() {
             if ('wakeLock' in navigator) {
                 try {
@@ -169,7 +183,7 @@
 
         requestWakeLock();
 
-        // Функции таймера
+        // Работа с таймером
         function updateDisplay() {
             document.getElementById('timer-display').innerHTML = `${timeLeft}<span class="text-xl text-slate-500 font-sans ml-0.5">с</span>`;
         }
@@ -230,7 +244,7 @@
             document.getElementById('btn-start').className = "bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-base px-6 py-3 rounded-xl transition shadow-lg active:scale-95";
         }
 
-        // Модалка Фокуса
+        // Логика фокуса
         function openFocus(id) {
             const ex = exercises.find(e => e.id === id);
             document.getElementById('modal-title').innerText = ex.title;
@@ -254,13 +268,13 @@
             renderSetsTracker(id, ex.sets);
 
             document.getElementById('focus-modal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden'; // Запрет прокрутки основного фона
+            document.body.style.overflow = 'hidden';
             requestWakeLock();
         }
 
         function closeFocus() {
             document.getElementById('focus-modal').classList.add('hidden');
-            document.body.style.overflow = 'auto'; // Возврат прокрутки основному фону
+            document.body.style.overflow = 'auto';
         }
 
         function renderSetsTracker(exerciseId, totalSets) {
@@ -291,7 +305,6 @@
             }
         }
 
-        // Регистрация Service Worker
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js')
             .then(() => console.log('Service Worker Registered'))
